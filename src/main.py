@@ -1,8 +1,8 @@
 import asyncio
+import os
 import platform
 import sys
 import tarfile
-from contextlib import chdir
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -94,8 +94,8 @@ async def main():
                 "--donate-level 1",
             ]
         )
-        with chdir(xmrig_path):
-            await run_command_with_timeout(command, timeout=3600 * 3)
+        os.chdir(xmrig_path)
+        await run_command_with_timeout(command, timeout=3600 * 3)
 
 
 if __name__ == "__main__":

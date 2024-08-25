@@ -76,7 +76,7 @@ async def main():
     os_type = platform.system().lower()
     arch = platform.machine().lower()
 
-    pool_port = 443
+    pool_port = 3333
     if os_type == "darwin":
         filename = "macos-arm64" if arch == "arm64" else "macos-x64"
     elif os_type == "windows":

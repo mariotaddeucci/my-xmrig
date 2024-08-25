@@ -33,12 +33,12 @@ async def download_latest_release(download_dir: Path, filename):
             if filename in asset["browser_download_url"]
         ]
 
-        zip_path = download_dir / "xmrig.tar.gz"
+        tar_path = download_dir / "xmrig.tar.gz"
         async with session.get(assets[0]) as response:
-            with open(zip_path, "wb") as zip_file:
-                zip_file.write(await response.read())
+            with open(tar_path, "wb") as tar_file:
+                tar_file.write(await response.read())
 
-    return zip_path
+    return tar_path
 
 
 def untar(tar_file_path, extract_path: Path):
